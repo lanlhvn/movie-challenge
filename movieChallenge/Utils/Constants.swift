@@ -5,4 +5,7 @@
 //  Created by Tequilan on 13/07/2022.
 //
 
-import Foundation
+struct Constants {
+    static let NETWORK_ERROR_CODE           = -999
+    static let SearchMovieEndpoint          = "http://www.omdbapi.com/?apikey=b9bd48a6&s=%@&type=movie&page=%d"
+}
