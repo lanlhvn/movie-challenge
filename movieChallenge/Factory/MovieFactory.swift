@@ -34,4 +34,14 @@ class MovieFactory {
             completion(backendResponse.isSucceed, backendResponse.message)
         }
     }
+    
+    func clearMovies() {
+        movieList.removeAll()
+        currentPage = 1
+        noMoreRecord = false
+    }
+    
+    func cancelSearchingMovies() {
+        CoreAPI.Movie.cancelSearchingMovies()
+    }
 }
