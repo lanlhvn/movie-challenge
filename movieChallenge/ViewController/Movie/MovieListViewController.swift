@@ -14,9 +14,8 @@ class MovieListViewController: BaseViewController {
     private let NUMBER_OF_ITEM_IN_A_ROW_PORTRAIT = 2
     private let NUMBER_OF_ITEM_IN_A_ROW_LANDSCAPE = 4
     private let THUMBNAIL_RATIO: CGFloat = 450/300 /* (height/width) */
-    
+    private var searchTask: DispatchWorkItem?
     @IBOutlet weak var collectionView: UICollectionView!
-    var searchTask: DispatchWorkItem?
     
     lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -110,10 +109,11 @@ extension MovieListViewController {
 // MARK: - UISearchResultsUpdating
 extension MovieListViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
+        cancelSearching()
+        
         // Cancel previous task if any
         searchTask?.cancel()
-        cancelSearching()
-
+        
         // Replace previous task with a new one
         let task = DispatchWorkItem { [weak self] in
             self?.loadMovies()
@@ -138,10 +138,6 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MOVIE_CELL_IDENTIFIER, for: indexPath) as! MovieCell
         cell.setupCell(model: movieFactory.movieList[indexPath.row])
-        DispatchQueue.main.async {
-            cell.setNeedsLayout()
-            cell.layoutIfNeeded()
-        }
         return cell
     }
 }
