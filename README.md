@@ -1,4 +1,5 @@
 # movie-challenge
-![alt text](https://github.com/lanlhvn/movie-challenge/blob/main/MovieListPortrait.png)
+<img src='https://github.com/lanlhvn/movie-challenge/blob/main/MovieListPortrait.png' width="300" >
 
-![alt text](https://github.com/lanlhvn/movie-challenge/blob/main/MovieListLanscape.png)
+<img src='https://github.com/lanlhvn/movie-challenge/blob/main/MovieListLanscape.png' width="600" >
+
