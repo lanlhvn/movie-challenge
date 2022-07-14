@@ -8,6 +8,7 @@
 class MovieFactory {
     var movieList = [MovieModel]()
     var currentPage = 1
+    var noMoreRecord = false
     
     func searchMovie(keyWord: String!, refresh: Bool = true, completion: @escaping ViewCompletionHander) {
         if refresh {
@@ -16,12 +17,19 @@ class MovieFactory {
         }
         var list = [MovieModel]()
         CoreAPI.Movie.searchMovies(keyWord: keyWord, page: currentPage) {[unowned self] json, backendResponse in
-            if backendResponse.isSucceed, let movies = json["Search"].array {
-                for mJson in movies {
-                    list.append(MovieModel(json: mJson))
+            if backendResponse.isSucceed {
+                if let movies = json["Search"].array {
+                    for mJson in movies {
+                        list.append(MovieModel(json: mJson))
+                    }
+                    self.movieList.append(contentsOf: list)
+                    self.currentPage += 1
+                    self.noMoreRecord = false
+                } else {
+                    // No record found
+                    // OR no more record
+                    self.noMoreRecord = true
                 }
-                self.movieList.append(contentsOf: list)
-                self.currentPage += 1
             }
             completion(backendResponse.isSucceed, backendResponse.message)
         }

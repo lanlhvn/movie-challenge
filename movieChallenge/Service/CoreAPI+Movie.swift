@@ -8,7 +8,7 @@
 extension CoreAPI {
     struct Movie {
         static func searchMovies(keyWord: String!, page: Int = 1, completion: @escaping NetworkingCompletion) {
-            let endpoint = String(format: Constants.SearchMovieEndpoint, keyWord, page)
+            let endpoint = String(format: Endpoints.SearchMovieEndpoint, keyWord, page)
             CoreAPI.makeRequest(endPoint: endpoint, method: .get, completion: completion)
         }
     }

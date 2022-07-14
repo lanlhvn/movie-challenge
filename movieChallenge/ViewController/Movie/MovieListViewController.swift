@@ -20,6 +20,7 @@ class MovieListViewController: BaseViewController {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Type something here to search"
         return searchController
     }()
     
@@ -59,6 +60,7 @@ extension MovieListViewController {
                 Helper.dismissLoading()
                 if success {
                     self?.collectionView.reloadData()
+                    self?.visibleFooter()
                 }
             }
         }
@@ -76,7 +78,13 @@ extension MovieListViewController {
         }
     }
     
-//    fma
+    fileprivate func visibleFooter() {
+        if movieFactory.noMoreRecord {
+            collectionView.switchRefreshFooter(to: .noMoreData)
+        } else {
+            collectionView.switchRefreshFooter(to: .normal)
+        }
+    }
 }
 
 // MARK: - UISearchResultsUpdating
@@ -104,15 +112,14 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension MovieListViewController: UICollectionViewDelegateFlowLayout {    
+extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
         let totalMargin = layout.sectionInset.left
-        + layout.sectionInset.right
-        + (layout.minimumInteritemSpacing * CGFloat(NUMBER_OF_ITEM_IN_A_ROW - 1))
+                        + layout.sectionInset.right
+                        + (layout.minimumInteritemSpacing * CGFloat(NUMBER_OF_ITEM_IN_A_ROW - 1))
         let width = (collectionView.bounds.width - totalMargin) / CGFloat(NUMBER_OF_ITEM_IN_A_ROW)
         let height = width * THUMBNAIL_RATIO
-        print("cell size: \(CGSize(width: width, height: height))")
         return CGSize(width: width, height: height)
     }
 }
