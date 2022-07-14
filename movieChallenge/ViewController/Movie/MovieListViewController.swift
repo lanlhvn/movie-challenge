@@ -11,16 +11,19 @@ import PullToRefreshKit
 class MovieListViewController: BaseViewController {
     private let MOVIE_CELL_IDENTIFIER = "MovieCellIdentifier"
     private let CELL_SPACING = 15.0
-    private let NUMBER_OF_ITEM_IN_A_ROW = 2
+    private let NUMBER_OF_ITEM_IN_A_ROW_PORTRAIT = 2
+    private let NUMBER_OF_ITEM_IN_A_ROW_LANDSCAPE = 4
     private let THUMBNAIL_RATIO: CGFloat = 450/300 /* (height/width) */
     
     @IBOutlet weak var collectionView: UICollectionView!
+    var searchTask: DispatchWorkItem?
     
     lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Type something here to search"
+        searchController.searchBar.delegate = self
         return searchController
     }()
     
@@ -42,6 +45,8 @@ extension MovieListViewController {
         title = "Film list"
         setupSearchController()
         setupCollectionView()
+        setProfileBarButton()
+        visibleFooter()
     }
     
     fileprivate func setupSearchController() {
@@ -52,17 +57,32 @@ extension MovieListViewController {
         loadMovies()
     }
     
-    fileprivate func loadMovies(refresh: Bool = true) {
-        guard let searchText = searchController.searchBar.text else { return }
+    @objc fileprivate func loadMovies(refresh: Bool = true) {
+        guard let searchText = searchController.searchBar.text?.trimmingCharacters(in: .whitespaces) else { return }
         if searchController.isActive {
-            Helper.showLoading()
-            movieFactory.searchMovie(keyWord: searchText, refresh: refresh) { [weak self] success, message in
-                Helper.dismissLoading()
-                if success {
-                    self?.collectionView.reloadData()
-                    self?.visibleFooter()
+            if !searchText.isEmpty {
+                Helper.showLoading()
+                movieFactory.searchMovie(keyWord: searchText, refresh: refresh) { [weak self] success, message in
+                    Helper.dismissLoading()
+                    if success {
+                        DispatchQueue.main.async {
+                            self?.collectionView.reloadData()
+                            self?.visibleFooter()
+                        }
+                    }
                 }
+            } else {
+                cancelSearching()
             }
+        }
+    }
+    
+    fileprivate func cancelSearching() {
+        DispatchQueue.main.async { [weak self] in
+            self?.movieFactory.cancelSearchingMovies()
+            self?.collectionView.reloadData()
+            self?.visibleFooter()
+            self?.collectionView.setContentOffset(CGPoint(x: 0, y: -54), animated: false)
         }
     }
     
@@ -88,9 +108,24 @@ extension MovieListViewController {
 }
 
 // MARK: - UISearchResultsUpdating
-extension MovieListViewController: UISearchResultsUpdating {
+extension MovieListViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
-        loadMovies()
+        // Cancel previous task if any
+        searchTask?.cancel()
+        cancelSearching()
+
+        // Replace previous task with a new one
+        let task = DispatchWorkItem { [weak self] in
+            self?.loadMovies()
+        }
+        searchTask = task
+
+        // Execute task in 0.3 seconds (if not cancelled !)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: task)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        cancelSearching()
     }
 }
 
@@ -115,11 +150,26 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
 extension MovieListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
+        var numberItemInARow = NUMBER_OF_ITEM_IN_A_ROW_PORTRAIT
+        if UIDevice.current.orientation.isLandscape {
+            numberItemInARow = NUMBER_OF_ITEM_IN_A_ROW_LANDSCAPE
+        } else {
+            numberItemInARow = NUMBER_OF_ITEM_IN_A_ROW_PORTRAIT
+        }
         let totalMargin = layout.sectionInset.left
                         + layout.sectionInset.right
-                        + (layout.minimumInteritemSpacing * CGFloat(NUMBER_OF_ITEM_IN_A_ROW - 1))
-        let width = (collectionView.bounds.width - totalMargin) / CGFloat(NUMBER_OF_ITEM_IN_A_ROW)
+                        + (layout.minimumInteritemSpacing * CGFloat(numberItemInARow - 1))
+        let width = (collectionView.bounds.width - totalMargin) / CGFloat(numberItemInARow)
         let height = width * THUMBNAIL_RATIO
         return CGSize(width: width, height: height)
+    }
+}
+
+// MARK: - ScrollView
+extension MovieListViewController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if movieFactory.movieList.count > 0 {
+            searchController.searchBar.resignFirstResponder()
+        }
     }
 }

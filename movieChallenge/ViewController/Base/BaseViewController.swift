@@ -11,18 +11,13 @@ class BaseViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
-}
-
-// MARK: - UIGestureRecognizerDelegate
-extension BaseViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return (otherGestureRecognizer is UIScreenEdgePanGestureRecognizer)
+    
+    func setProfileBarButton() {
+        let button = UIButton(type: .custom)
+        let image = UIImage(named: "defaultProfilePicture")
+        button.setImage(image?.resizeImage(35, opaque: false), for: .normal)
+        let barButton = UIBarButtonItem(customView: button)
+        self.navigationItem.rightBarButtonItem = barButton
     }
 }

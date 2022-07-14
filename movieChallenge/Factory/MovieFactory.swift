@@ -8,7 +8,7 @@
 class MovieFactory {
     var movieList = [MovieModel]()
     var currentPage = 1
-    var noMoreRecord = false
+    var noMoreRecord = true
     
     func searchMovie(keyWord: String!, refresh: Bool = true, completion: @escaping ViewCompletionHander) {
         if refresh {
@@ -26,8 +26,10 @@ class MovieFactory {
                     self.currentPage += 1
                     self.noMoreRecord = false
                 } else {
-                    // No record found
-                    // OR no more record
+                    if currentPage == 1 {
+                        // No record found
+                        self.movieList.removeAll()
+                    }
                     self.noMoreRecord = true
                 }
             }
@@ -35,13 +37,14 @@ class MovieFactory {
         }
     }
     
-    func clearMovies() {
+    fileprivate func clearMovies() {
         movieList.removeAll()
         currentPage = 1
-        noMoreRecord = false
+        noMoreRecord = true
     }
     
     func cancelSearchingMovies() {
         CoreAPI.Movie.cancelSearchingMovies()
+        clearMovies()
     }
 }

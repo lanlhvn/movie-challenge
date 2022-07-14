@@ -12,4 +12,5 @@ struct Constants {
 
 struct Endpoints {
     static let SearchMovieEndpoint          = "http://www.omdbapi.com/?apikey=b9bd48a6&s=%@&type=movie&page=%d"
+    static let SearchMovieEndpointToCancel  = "http://www.omdbapi.com/?apikey=b9bd48a6&s="
 }

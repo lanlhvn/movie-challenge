@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		271807B1287FEE9000E7DB18 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271807B0287FEE9000E7DB18 /* UIImage+Extension.swift */; };
 		272DC112287E5B2A00BA83C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272DC111287E5B2A00BA83C9 /* AppDelegate.swift */; };
 		272DC114287E5B2A00BA83C9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272DC113287E5B2A00BA83C9 /* SceneDelegate.swift */; };
 		272DC11B287E5B2D00BA83C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 272DC11A287E5B2D00BA83C9 /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		271807B0287FEE9000E7DB18 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIImage+Extension.swift"; path = "MovieChallenge/Extensions/UIImage+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		272DC10E287E5B2A00BA83C9 /* MovieChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		272DC111287E5B2A00BA83C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		272DC113287E5B2A00BA83C9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				272DC153287FC38200BA83C9 /* UIView+Extension.swift */,
+				271807B0287FEE9000E7DB18 /* UIImage+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				272DC139287E671B00BA83C9 /* BaseNavigationViewController.swift in Sources */,
 				272DC13B287E69B600BA83C9 /* MovieListViewController.swift in Sources */,
 				272DC151287EF8CA00BA83C9 /* Helper.swift in Sources */,
+				271807B1287FEE9000E7DB18 /* UIImage+Extension.swift in Sources */,
 				272DC130287E655D00BA83C9 /* CoreAPI.swift in Sources */,
 				272DC137287E66F600BA83C9 /* BaseViewController.swift in Sources */,
 			);

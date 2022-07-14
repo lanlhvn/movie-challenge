@@ -47,7 +47,7 @@ struct CoreAPI {
             jsonResponse = try JSON(data: responseObject.data!)
         }
         catch {
-            let backendResponse = BackendResponse(inResponseCode: -999, inMessage: "A Problem occurred, please contact the administrator.", isSucceed: false)
+            let backendResponse = BackendResponse(inResponseCode: -998, inMessage: "A Problem occurred, please contact the administrator.", isSucceed: false)
             completion(JSON(), backendResponse)
         }
         

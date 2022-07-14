@@ -47,6 +47,17 @@
                 </constraints>
             </collectionViewCellContentView>
             <size key="customSize" width="220" height="333"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="4"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                    <real key="value" value="0.0"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                    <real key="value" value="0.0"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="posterImageView" destination="YSV-Mu-oxv" id="oFP-4S-2de"/>
                 <outlet property="titleLabel" destination="mxv-aM-22V" id="vey-8h-ofC"/>
