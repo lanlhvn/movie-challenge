@@ -163,9 +163,7 @@ extension MovieListViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - ScrollView
 extension MovieListViewController {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if movieFactory.movieList.count > 0 {
-            searchController.searchBar.resignFirstResponder()
-        }
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchController.searchBar.resignFirstResponder()
     }
 }

@@ -16,7 +16,7 @@ class MovieFactory {
             movieList.removeAll()
         }
         var list = [MovieModel]()
-        CoreAPI.Movie.searchMovies(keyWord: keyWord, page: currentPage) {[unowned self] json, backendResponse in
+        CoreAPI.Movie.searchMovies(keyWord: keyWord, page: currentPage) {json, backendResponse in
             if backendResponse.isSucceed {
                 if let movies = json["Search"].array {
                     for mJson in movies {
@@ -26,7 +26,7 @@ class MovieFactory {
                     self.currentPage += 1
                     self.noMoreRecord = false
                 } else {
-                    if currentPage == 1 {
+                    if self.currentPage == 1 {
                         // No record found
                         self.movieList.removeAll()
                     }
